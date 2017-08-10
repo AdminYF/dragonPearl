@@ -1,0 +1,33 @@
+<res>
+   <item name="setting/paylines.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="setting/line.png" type="Line" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="setting/seting_line.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_1.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_10.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_11.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_12.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_13.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_14.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_15.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_16.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_17.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_18.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_19.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_2.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_20.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_3.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_4.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_5.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_6.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_7.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_8.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="line/xian_9.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="commen" type="" compress="0" pack="0" quality="80" props="" picType="0"/>
+   <item name="commen/progress_time.png" type="ProgressBar" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="commen/anniu.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="commen/background.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="commen/background_run.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="commen/dpbbackground.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+   <item name="commen/mask.png" type="Image" compress="0" pack="2" quality="80" props="" picType="0"/>
+   <item name="commen/sk.png" type="Image" compress="0" pack="1" quality="80" props="" picType="0"/>
+</res>
