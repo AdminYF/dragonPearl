@@ -16,7 +16,7 @@
     _proto.init = function(){
         _this = this;
 
-        slider1 = new SliderView(0.1,10);
+        slider1 = new SliderView(0.5,10);
         this.chipValue  = slider1.value;
         slider1.pos(sliderX,40);
 
@@ -37,8 +37,8 @@
         this.addChild(toast);
        
         slider1.onMouseDown(function(value){
-            _this.chipValue = value;
-            toast.show(value);
+            _this.chipValue = value.toFixed(1);
+            toast.show(_this.chipValue);
             _this.showPrompt();
             
         });

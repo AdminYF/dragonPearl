@@ -50,6 +50,8 @@
                 volumn : this.audioSet.voiceEnable,//声音
                 forward : this.scrollSet.forward,//加快转动速度
                 autoScrollCount : this.scrollSet.auto,//自动旋转次数
+                bet : this.amountSet.chipValue,//金币面值
+                odds : this.amountSet.chips,//金币数量
                 lines : this.amountSet.lineNumber,//投注线数量
                 amount : this.amountSet.amount // 投注总额
             };

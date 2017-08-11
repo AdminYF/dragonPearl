@@ -106,9 +106,11 @@
     var output;
     var betObj = {
         "cmd" : "videoSlot",
-        "bet" : 2,
+        "bet" : 0.1,
         "odds":1,
-        "gameType":"dragonBall",
+        "lines" : 20,
+        "gameType":7,
+
         // map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
         //     [0,2,9],
         //     [0,8,1],
@@ -314,7 +316,7 @@
 
         this.runBtn.on(Laya.Event.MOUSE_DOWN,this,function(){
             window.playSound("click");
-            if(totalAmount < betObj.bet || totalAmount <= 0){
+            if(totalAmount < option.amount || totalAmount <= 0){
                 var p = new PromptView("余额不足");
                 _this.addChild(p);
                 p.buttonClick(function(){
@@ -347,23 +349,30 @@
             setting.back(function(obj){
                 console.log(obj);
                 _this.displayLines(obj.lines);
+                
+                betObj.bet = obj.bet;
+                betObj.odds = obj.odds;
+                betObj.lines = obj.lines;
+
+                option.amount = obj.amount;
                 option.autoScrollCount = obj.autoScrollCount;
-                betObj.bet = obj.amount;
+                option.forward = obj.forward;
+
                 _this.totalBet.text = "赌注总额" + 10 * obj.amount.toFixed();
                 _this.bet.text = "¥" + window.formatCurrency(obj.amount);
                 if(obj.autoScrollCount > 0){
                     _this.runBtn.skin = "commen/control_panel_mobile_06.png";
                 }
-                option.forward = obj.forward;
+                
                 if(obj.forward){
                     speed = 30;
                 }else{
                     speed = 20;
                 }
-                 _this.changeSpeed(speed);
-                 option.volumn = obj.music;
-                 option.music = obj.volumn;
-                 window.soundEnable = obj.volumn;
+                _this.changeSpeed(speed);
+                option.volumn = obj.music;
+                option.music = obj.volumn;
+                window.soundEnable = obj.volumn;
                 setting.alpha = 0;
             });
          });
@@ -904,7 +913,7 @@
     }
 
     _proto.sendBet = function(){
-        if(totalAmount < betObj.bet || totalAmount <= 0){
+        if(totalAmount < option.amount || totalAmount <= 0){
             var p = new PromptView("余额不足");
             this.addChild(p);
             p.buttonClick(function(){
@@ -912,7 +921,7 @@
             });
         }else{
             socket.send(JSON.stringify(betObj));
-            totalAmount -= betObj.bet;
+            totalAmount -= option.amount;
             var money = window.formatCurrency(totalAmount);
             this.balance.text = "余额 " + totalAmount * 10;
             this.amount.text = "¥" + money;
@@ -920,7 +929,7 @@
             this.win.text = "";
             this.status.text = "赢";
 
-            // console.log(betObj);
+            console.log(betObj);
             timer = 0;
         }
     }
@@ -1077,17 +1086,17 @@
         var clip = new AcountImage(0);
         Laya.stage.addChild(clip);
         
-        clip.startCounter(total * 10,10);
+        clip.startCounter(total * 10);
         clip.y = 500;
 
-        var step = total / 10;
+        var step = total / 5;
         var a = 0;
 
-        for(var i = 0; i < 10; i++){
+        for(var i = 0; i < 5; i++){
             a  += step;
             this.increaseWin(a,i);
             clip.centerX = 0;
-            this.spangleYouWin(youWin,i,10,function(){
+            this.spangleYouWin(youWin,i,5,function(){
                 console.log("奖励结束");
                 if(isFree){
                     _this.freeGameFinish();

@@ -71,17 +71,17 @@ function getAccountInfoFromNative(name,psw){
     this.isApp = true;
 }
 function loading(num){
-    // /*
+    ///*
     if(!this.load){
         this.load = new LoadingView();
         Laya.stage.addChild(load);
     }
     this.index++;
     counter(num,this.index);
-    // */
+    //*/
 }
 function counter(num,i){
-    // /*
+    ///*
     Laya.timer.once(100 * i,this,function(){
         this.load.value = num;
         this.load.progress.bar.width = num * this.load.progress.width;
@@ -91,7 +91,7 @@ function counter(num,i){
             this.load.removeSelf();
         }
     });
-    // */
+    //*/
 }
 
 function initViews(){
@@ -114,6 +114,16 @@ function onLoaded (setting){
     player.loop = true;
 
 
+
+
+/*
+    var clip = new AcountImage(0);
+    Laya.stage.addChild(clip);
+    this.soundEnable = true;
+    clip.startCounter(1.005 * 10,10);
+    clip.y = 200;
+    clip.x = 200;
+    */
 /*
     var prizeDraw = [
     {
