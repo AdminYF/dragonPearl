@@ -300,7 +300,14 @@
     var _proto = MainView.prototype;
     _proto.init = function (){
         _this = this;
-        this.connect();
+        totalAmount = window.playerAmount;
+        if(!window.isApp){
+            this.connect();
+        }
+        var money = window.formatCurrency(totalAmount);
+        this.balance.text = "余额 " + totalAmount * 10;
+        this.amount.text = "¥" + money;
+
         panelBox = new Laya.Panel();
         panelBox.size(machineCount * iconW + 4 * spacing,boxHeight);
         var x = (this.background.width - panelBox.width)/2;
@@ -316,6 +323,7 @@
 
         this.runBtn.on(Laya.Event.MOUSE_DOWN,this,function(){
             window.playSound("click");
+            /*
             if(totalAmount < option.amount || totalAmount <= 0){
                 var p = new PromptView("余额不足");
                 _this.addChild(p);
@@ -323,6 +331,7 @@
                     console.log("余额不足");
                 });
             }else{
+                */
                 if(option.autoScrollCount > 0){//在自动旋转情况下
                     // 当前是开始按钮
                     if(this.runBtn.skin == "commen/control_panel_mobile_06.png"){
@@ -339,7 +348,7 @@
                     this.buttonDisplay(false);
                     this.toastLabel.text = "祝你好运！";
                 }
-            }
+            // }
         });
          this.settingBtn.on(Laya.Event.MOUSE_DOWN,this,function(){
             window.playSound("click");
@@ -866,6 +875,11 @@
             window.account = {
                 "cmd":"TrialGame",
                 "versions":"1.0"
+
+
+                // "cmd": "Login",
+                // "loginName": "ljf",
+                // "password": "123456789"
             };
         }
 		socket.on(Event.OPEN, this, function(){
@@ -875,6 +889,8 @@
             Laya.timer.loop(15000,this,function(){
                 socket.send(JSON.stringify({"cmd" : "Heartbeat"}));
             });
+
+            // window.alert(window.account.cmd);
 
             Laya.timer.once(2000,this,function(){
                 var music = new MusicEnable();
@@ -920,7 +936,11 @@
                 console.log("余额不足");
             });
         }else{
-            socket.send(JSON.stringify(betObj));
+            if(window.isApp){
+                window.webkit.messageHandlers.slot.postMessage(JSON.stringify(betObj));
+            }else{
+                socket.send(JSON.stringify(betObj));
+            }
             totalAmount -= option.amount;
             var money = window.formatCurrency(totalAmount);
             this.balance.text = "余额 " + totalAmount * 10;

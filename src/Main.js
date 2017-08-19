@@ -16,11 +16,6 @@ Laya.stage.alignV = "middle";
 var bg = null;
 
 
-var account = {
-    "cmd": "Login",
-    "loginName": "",
-    "password": ""
-};
 
 var images = [
 
@@ -50,26 +45,23 @@ var images = [
 // webSocket 信息
 this.socketInfo = {
     // ip : "118.193.204.164",
-    ip : "192.168.1.106",
+    // ip : "192.168.1.106",
+    ip : "117.27.251.69",
     port : 22287
 };
-this.account = {
-    "cmd": "Login",
-    "loginName": "",
-    "password": ""
-};
+
 this.soundEnable = false;
 this.index = 0;
 this.loaded = false;
-this.isApp = false;
+
 var player;
+
+
+
 Laya.loader.load(images,laya.utils.Handler.create(this,onLoaded),Laya.Handler.create(this,loading,null,false),Laya.loader.JSON);
 
-function getAccountInfoFromNative(name,psw){
-    this.account.loginName  = name;
-    this.account.password = psw;
-    this.isApp = true;
-}
+
+
 function loading(num){
     ///*
     if(!this.load){
@@ -101,7 +93,7 @@ function initViews(){
     bg.height = 600;
     Laya.stage.addChild(bg);
 
-    var main = new MainView();
+    main = new MainView();
     Laya.stage.addChild(main);
 }
 
@@ -189,13 +181,13 @@ function stopSound(url){
 
 function backgroundMusicPlay(enable){
     if(enable){
-        if(this.isApp){
+        if(isApp){
             window.webkit.messageHandlers.play.postMessage('play');
         }else{
             playBackgroundMusic();
         }
     }else{
-        if(this.isApp){
+        if(isApp){
             window.webkit.messageHandlers.pause.postMessage('pause');
         }else{
             stopBackgroundMusic();
@@ -203,21 +195,38 @@ function backgroundMusicPlay(enable){
     }
 }
 
+
+
+/************************************ 与 native 交互部分 ****************************************************/
+var main;
+var isApp = false;
+var playerAmount = 0;
+var account = {
+    "cmd": "Login",
+    "loginName": "",
+    "password": ""
+};
+function getAccountInfoFromNative(amount){
+    isApp = true;
+    playerAmount = amount;
+}
+function recieveMassage(message){
+    main.onMessageReveived(message);
+}
 function playBackgroundMusic(){
     player.play();
-    // alert('playBackgroundMusic');
 }
 function stopBackgroundMusic(){
     player.pause();
-    // alert('stopBackgroundMusic');
 }
 
 function closeWindow(){
     window.close();
-    if(this.isApp){
+    if(isApp){
         window.webkit.messageHandlers.close.postMessage('close');
     }
 }
+/****************************************************************************************/
 
 function cacheFrameAnimation (){
     Laya.Animation.createFrames("res/atlas/bead.atlas","bead");
@@ -226,6 +235,10 @@ function cacheFrameAnimation (){
     Laya.Animation.createFrames("res/atlas/golden.atlas","golden");
     Laya.Animation.createFrames("res/atlas/money.atlas","money");
 }
+
+// function recieveMassage (message){
+//     alert(message);
+// }
 // function setErrorCode (){
 //     this.errorCode.set("-1","标识码错误");
 //     this.errorCode.set("-2","会员不存在");
