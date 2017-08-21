@@ -16,7 +16,7 @@
     _proto.init = function(){
         _this = this;
 
-        slider1 = new SliderView(0.5,10);
+        slider1 = new SliderView(0.1,10);
         this.chipValue  = slider1.value;
         slider1.pos(sliderX,40);
 

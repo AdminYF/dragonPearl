@@ -57,17 +57,17 @@ var player;
 Laya.loader.load(images,laya.utils.Handler.create(this,onLoaded),Laya.Handler.create(this,loading,null,false),Laya.loader.JSON);
 
 function loading(num){
-    /*
+    // /*
     if(!this.load){
         this.load = new LoadingView();
         Laya.stage.addChild(load);
     }
     this.index++;
     counter(num,this.index);
-    */
+    // */
 }
 function counter(num,i){
-    /*
+    // /*
     Laya.timer.once(100 * i,this,function(){
         this.load.value = num;
         this.load.progress.bar.width = num * this.load.progress.width;
@@ -77,7 +77,7 @@ function counter(num,i){
             this.load.removeSelf();
         }
     });
-    */
+    // */
 }
 
 function initViews(){
@@ -99,7 +99,7 @@ function onLoaded (setting){
     player.src = "mp3/dpmusic_main.mp3";
     player.loop = true;
 
-    initViews();
+    // initViews();
 
     // var ani = new Laya.Animation();
     // ani.loadAnimation("Particle.ani");
@@ -196,36 +196,45 @@ function backgroundMusicPlay(enable){
 
 
 
-/************************************ 与 native 交互部分 ****************************************************/
-var main;
-var isApp = false;
-var playerAmount = 0;
-var account = {
-    "cmd": "Login",
-    "loginName": "",
-    "password": ""
-};
+/*
+* 与 native 交互部分 在APP模式下可直接连接APP内的socket，在浏览器模式下连接webSocket，需要自己创建一个账号登录 
+* socket 返回数据格式与 webSocket 接收到的数据格式完全一样
+*/
+var main;//游戏主界面
+var isApp = false;//是否是APP登录
+var playerAmount = 0;//玩家金额
+//获取玩家金额
 function getAccountInfoFromNative(amount){
     isApp = true;
     playerAmount = amount;
 }
+// 返回投注数据
 function recieveMassage(message){
-    main.onMessageReveived(message);
+    main.onMessageReveived(message);//此处我是直接调用main下接收到webSocket的函数
 }
-function playBackgroundMusic(){
-    player.play();
-}
-function stopBackgroundMusic(){
-    player.pause();
-}
-
+// 退出游戏界面
 function closeWindow(){
     window.close();
     if(isApp){
         window.webkit.messageHandlers.close.postMessage('close');
     }
 }
-/****************************************************************************************/
+/*
+ 在发送投注信息的函数内做判断，betObj即为投注信息
+if(window.isApp){
+    window.webkit.messageHandlers.slot.postMessage(JSON.stringify(betObj));
+}else{
+    socket.send(JSON.stringify(betObj));
+}
+*/
+// 此处两个函数可选，在Laya内部无法开启、关闭背景音乐情况下，可通过APP开启和关闭背景音乐
+function playBackgroundMusic(){
+    player.play();
+}
+function stopBackgroundMusic(){
+    player.pause();
+}
+/************************************************************************************************************************************/
 
 function cacheFrameAnimation (){
     Laya.Animation.createFrames("res/atlas/bead.atlas","bead");

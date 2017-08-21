@@ -111,13 +111,13 @@
         "lines" : 20,
         "gameType":7,
 
-        map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
-            [0,2,9],
-            [0,8,1],
-            [7,3,4],
-            [1,6,3],
-            [7,9,2]
-	    ]
+        // map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
+        //     [0,2,9],
+        //     [0,8,1],
+        //     [9,3,4],
+        //     [5,6,3],
+        //     [7,9,2]
+	    // ]
     };
 
     //抽奖结果
@@ -141,7 +141,7 @@
         volumn : false,//声音
         forward : false,//加快转动速度
         autoScrollCount : 0,//自动旋转次数
-        amount : 0 // 投注总额
+        amount : 2 // 投注总额
     };
 
     var lineY = boxHeight / 10;
@@ -300,6 +300,8 @@
         totalAmount = window.playerAmount;
         if(!window.isApp){
             this.connect();
+        }else{
+            this.musicToast();
         }
         var money = window.formatCurrency(totalAmount);
         this.balance.text = "余额 " + totalAmount * 10;
@@ -568,17 +570,8 @@
         flag = 0;
         fireControl.isFire = false;
         fireControl.index = 0;
-        /*
-        var s = Math.round(Math.random() * 10);
-        var rounds = [];
-        if(s == 5 && !isFree){
-            console.log("随机数：" + s);
-            fireControl.isFire = true;
-            rounds = [1,2,3,9,10];
-            fireControl.index = 2;
-        }
-        */
         var index = this.forwardStartIndex();
+        console.log(index);
         if(index > 1){
             fireControl.isFire = true;
             fireControl.index = index;
@@ -638,10 +631,10 @@
                             if(fireControl.isFire && scrollMode == 0){
                                 if(count + 1 >= fireControl.index){
                                     fireIndex++;
-                                    console.log(fireIndex);
+                                    // console.log(fireIndex);
                                     maskContainer.removeChildren(1,maskContainer.numChildren);
-                                    if(fireIndex < 4){
-                                        var b = panelBox.getChildAt(fireIndex + 1);
+                                    if(count < 4){
+                                        var b = panelBox.getChildAt(count + 1);
                                         b.speed = 30;
                                         var ani = new Laya.Animation();
                                         ani.loadAnimation("Particle.ani");
@@ -845,48 +838,44 @@
             });
         }
     }
+    _proto.musicToast = function(){
+        // /*
+        Laya.timer.once(2000,this,function(){
+            var music = new MusicEnable();
+            this.addChild(music);
+            music.buttonClicked(function(value){
+                window.soundEnable = value; 
+                option.volumn = value;
+                option.music = value;
+                music.removeSelf();      
+                window.backgroundMusicPlay(option.music);
+                setting.setOption(option);   
+            });
+            Laya.timer.once(3000,this,function(){
+                music.removeSelf();
+            })
+        });
+            // */
+    }
 
 // ============================================= socket =========================================================//
     _proto.connect = function(){
 		socket = new Socket();
 		socket.connect(window.socketInfo.ip, window.socketInfo.port);
 		output = socket.output;
-        if(window.account.loginName.length == 0 || window.account.password.length == 0){
-            window.account = {
-                "cmd":"TrialGame",
-                "versions":"1.0"
-
-
-                // "cmd": "Login",
-                // "loginName": "ljf",
-                // "password": "123456789"
-            };
-        }
 		socket.on(Event.OPEN, this, function(){
             console.log("Connected");
-            socket.send(JSON.stringify(window.account));
+            socket.send(JSON.stringify({
+                "cmd":"TrialGame",
+                "versions":"1.0"
+            }));
 
             Laya.timer.loop(15000,this,function(){
                 socket.send(JSON.stringify({"cmd" : "Heartbeat"}));
             });
 
-            // window.alert(window.account.cmd);
-
-            Laya.timer.once(2000,this,function(){
-                var music = new MusicEnable();
-                this.addChild(music);
-                music.buttonClicked(function(value){
-                    window.soundEnable = value; 
-                    option.volumn = value;
-                    option.music = value;
-                    music.removeSelf();      
-                    window.backgroundMusicPlay(option.music);
-                    setting.setOption(option);   
-                });
-                Laya.timer.once(3000,this,function(){
-                    music.removeSelf();
-                })
-            });
+            this.musicToast();
+            
         });
 		socket.on(Event.CLOSE, this, function(){
             socket.offAll();
@@ -968,7 +957,6 @@
                     this.prepareResultData();
                     this.prepareResult();
                     this.scroll();
-                    
                 break;
                 default:
                 break;
@@ -976,25 +964,40 @@
         }else{//错误处理
             var p = new PromptView("错误码：" + data.status);
             this.addChild(p);
-            p.buttonClick(function(){});
+            p.buttonClick(function(){
+                _this.buttonDisplay(true);
+            });
         }
         
         socket.input.clear();
     }
 
     _proto.forwardStartIndex = function(){
-        var symbolCount = 0;
+        var symbolCount = [];
+        var isFirst = true;
         for(var i = 0; i < gameResult.length; i++){
             var a = gameResult[i];
             for(var j = 0; j < a.length; j++){
                 var value = a[j];
                 if(value == 0){
-                    symbolCount++;
-                    if(symbolCount == 2 && i >= 1 && i <= 3){
-                        return i + 1;
+                    if(isFirst){
+                        isFirst = false;
+                        symbolCount.push(i);
+                    }
+                    for(var n = 0; n < symbolCount.length; n++){
+                        var o = symbolCount[n];
+                        if(i != o){
+                            symbolCount.push(i);
+                        }
                     }
                 }
             }
+        }
+        console.log(symbolCount);
+        if(symbolCount.length == 2){
+            return symbolCount[1] + 1;
+        }else{
+            return 0;
         }
     }
 
