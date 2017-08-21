@@ -39,14 +39,13 @@ var images = [
     "res/atlas/line.atlas",
 
     "res/atlas/firework.atlas",
-    "res/atlas/kuang.atlas"
+    "res/atlas/kuang.atlas",
+    "res/atlas/particle.atlas"
 
     ];
 // webSocket 信息
 this.socketInfo = {
-    // ip : "118.193.204.164",
     ip : "192.168.1.106",
-    // ip : "117.27.251.69",
     port : 22287
 };
 
@@ -58,17 +57,17 @@ var player;
 Laya.loader.load(images,laya.utils.Handler.create(this,onLoaded),Laya.Handler.create(this,loading,null,false),Laya.loader.JSON);
 
 function loading(num){
-    ///*
+    /*
     if(!this.load){
         this.load = new LoadingView();
         Laya.stage.addChild(load);
     }
     this.index++;
     counter(num,this.index);
-    //*/
+    */
 }
 function counter(num,i){
-    ///*
+    /*
     Laya.timer.once(100 * i,this,function(){
         this.load.value = num;
         this.load.progress.bar.width = num * this.load.progress.width;
@@ -78,7 +77,7 @@ function counter(num,i){
             this.load.removeSelf();
         }
     });
-    //*/
+    */
 }
 
 function initViews(){
@@ -100,7 +99,12 @@ function onLoaded (setting){
     player.src = "mp3/dpmusic_main.mp3";
     player.loop = true;
 
+    initViews();
 
+    // var ani = new Laya.Animation();
+    // ani.loadAnimation("Particle.ani");
+    // Laya.stage.addChild(ani);
+    // ani.play();
 
 
 /*

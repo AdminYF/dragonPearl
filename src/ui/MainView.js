@@ -285,9 +285,6 @@
     var lastAmount = 0;
     //粒子播放位置控制
     var fireIndex = 0;
-
-    var particleBox;
-
     // 转动模式
     var scrollMode = 0;
 
@@ -393,37 +390,7 @@
 
         this.initMask();
         this.setTimer();
-
-        // this.layoutParticle();
-        // this.firePart(3);
     }
-    /*
-    _proto.firePart = function(index){
-        var parts = particleBox.numChildren;
-        for(var i = 0; i < parts; i++){
-            var p = particleBox.getChildAt(i);
-            if(i == index){
-                p.alpha = 1;
-                p.loop();
-            }else{
-                p.alpha = 0;
-            }
-        }
-    }
-    _proto.layoutParticle = function(){
-        particleBox = new Laya.View();
-        particleBox.x = maskContainer.x;
-        particleBox.y = maskContainer.y;
-        particleBox.size(maskContainer.width,maskContainer.height);
-        this.addChild(particleBox);
-        for(var i = 0; i < machineCount; i++){
-            var box = panelBox.getChildAt(i);
-            var p = new RoundParticle();
-            p.x = box.x;
-            particleBox.addChild(p);
-        }
-    }
-    */
 
     _proto.setTimer = function(){
          Laya.timer.loop(1000,this,function(){
@@ -670,27 +637,19 @@
                             // console.log(count);
                             if(fireControl.isFire && scrollMode == 0){
                                 if(count + 1 >= fireControl.index){
-                                    
                                     fireIndex++;
-                                    /*
-                                    if(fireIndex == 1){
-                                        var b = panelBox.getChildAt(2);
-                                        b.speed = 30;
-                                        this.firePart(3);
-                                    }else if(fireIndex == 2){
-                                        var b = panelBox.getChildAt(3);
-                                        b.speed = 30;
-                                        this.firePart(4);
-                                    }else if(fireIndex == 3){
-
-                                    }
-                                    */
                                     console.log(fireIndex);
+                                    maskContainer.removeChildren(1,maskContainer.numChildren);
                                     if(fireIndex < 4){
                                         var b = panelBox.getChildAt(fireIndex + 1);
                                         b.speed = 30;
+                                        var ani = new Laya.Animation();
+                                        ani.loadAnimation("Particle.ani");
+                                        ani.pos(b.x - 20,-15);
+                                        maskContainer.addChild(ani);
+                                        ani.play();
+                                        ani.scale(0.8,0.85);
                                     }
-                                    
                                 }
                             }
                             count++;
