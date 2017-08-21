@@ -45,8 +45,8 @@ var images = [
 // webSocket 信息
 this.socketInfo = {
     // ip : "118.193.204.164",
-    // ip : "192.168.1.106",
-    ip : "117.27.251.69",
+    ip : "192.168.1.106",
+    // ip : "117.27.251.69",
     port : 22287
 };
 
@@ -55,12 +55,7 @@ this.index = 0;
 this.loaded = false;
 
 var player;
-
-
-
 Laya.loader.load(images,laya.utils.Handler.create(this,onLoaded),Laya.Handler.create(this,loading,null,false),Laya.loader.JSON);
-
-
 
 function loading(num){
     ///*

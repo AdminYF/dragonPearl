@@ -111,13 +111,13 @@
         "lines" : 20,
         "gameType":7,
 
-        // map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
-        //     [0,2,9],
-        //     [0,8,1],
-        //     [0,3,4],
-        //     [0,6,3],
-        //     [7,9,2]
-	    // ]
+        map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
+            [0,2,9],
+            [0,8,1],
+            [7,3,4],
+            [1,6,3],
+            [7,9,2]
+	    ]
     };
 
     //抽奖结果
@@ -323,7 +323,7 @@
 
         this.runBtn.on(Laya.Event.MOUSE_DOWN,this,function(){
             window.playSound("click");
-            /*
+            ///*
             if(totalAmount < option.amount || totalAmount <= 0){
                 var p = new PromptView("余额不足");
                 _this.addChild(p);
@@ -331,7 +331,7 @@
                     console.log("余额不足");
                 });
             }else{
-                */
+                //*/
                 if(option.autoScrollCount > 0){//在自动旋转情况下
                     // 当前是开始按钮
                     if(this.runBtn.skin == "commen/control_panel_mobile_06.png"){
@@ -348,7 +348,7 @@
                     this.buttonDisplay(false);
                     this.toastLabel.text = "祝你好运！";
                 }
-            // }
+            }
         });
          this.settingBtn.on(Laya.Event.MOUSE_DOWN,this,function(){
             window.playSound("click");
@@ -394,10 +394,10 @@
         this.initMask();
         this.setTimer();
 
-        this.layoutParticle();
+        // this.layoutParticle();
         // this.firePart(3);
     }
-
+    /*
     _proto.firePart = function(index){
         var parts = particleBox.numChildren;
         for(var i = 0; i < parts; i++){
@@ -423,7 +423,7 @@
             particleBox.addChild(p);
         }
     }
-    
+    */
 
     _proto.setTimer = function(){
          Laya.timer.loop(1000,this,function(){
@@ -601,6 +601,7 @@
         flag = 0;
         fireControl.isFire = false;
         fireControl.index = 0;
+        /*
         var s = Math.round(Math.random() * 10);
         var rounds = [];
         if(s == 5 && !isFree){
@@ -609,11 +610,20 @@
             rounds = [1,2,3,9,10];
             fireControl.index = 2;
         }
-        
+        */
+        var index = this.forwardStartIndex();
+        if(index > 1){
+            fireControl.isFire = true;
+            fireControl.index = index;
+        }
         for(var i = 0; i < panelBox.numChildren; i++){
             var box = panelBox.getChildAt(i);
             if(fireControl.isFire){
-                box.round = rounds[i];
+                if(i >= index){
+                    box.round = 6 + i;
+                }else{
+                    box.round = i + 1;
+                }
             }else{
                 if(scrollMode == 1){
                     box.round = 2;
@@ -659,17 +669,28 @@
                         if(box.round <= 0){
                             // console.log(count);
                             if(fireControl.isFire && scrollMode == 0){
-                                if(count >= fireControl.index){
+                                if(count + 1 >= fireControl.index){
+                                    
                                     fireIndex++;
+                                    /*
                                     if(fireIndex == 1){
-                                        var b = panelBox.getChildAt(3);
+                                        var b = panelBox.getChildAt(2);
                                         b.speed = 30;
                                         this.firePart(3);
                                     }else if(fireIndex == 2){
-                                        var b = panelBox.getChildAt(4);
+                                        var b = panelBox.getChildAt(3);
                                         b.speed = 30;
                                         this.firePart(4);
+                                    }else if(fireIndex == 3){
+
                                     }
+                                    */
+                                    console.log(fireIndex);
+                                    if(fireIndex < 4){
+                                        var b = panelBox.getChildAt(fireIndex + 1);
+                                        b.speed = 30;
+                                    }
+                                    
                                 }
                             }
                             count++;
@@ -1000,6 +1021,22 @@
         }
         
         socket.input.clear();
+    }
+
+    _proto.forwardStartIndex = function(){
+        var symbolCount = 0;
+        for(var i = 0; i < gameResult.length; i++){
+            var a = gameResult[i];
+            for(var j = 0; j < a.length; j++){
+                var value = a[j];
+                if(value == 0){
+                    symbolCount++;
+                    if(symbolCount == 2 && i >= 1 && i <= 3){
+                        return i + 1;
+                    }
+                }
+            }
+        }
     }
 
     _proto.prepareResultData = function(){
