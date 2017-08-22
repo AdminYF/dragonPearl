@@ -57,18 +57,57 @@
         // this.graphics.drawRect(0,0,this.width,this.height,color);
     }
 
+    _proto.showMarkIcon = function(){
+        if(this.icon.numChildren > 0){
+            this.icon.removeChildren(0,this.icon.numChildren);
+        }
+        switch (this.info.index) {
+            case 0:
+                this.addMarkIcon("commen/free_spins.png");
+                break;
+            case 1:
+                this.addMarkIcon("commen/sq.png");
+                break;
+            default:
+                break;
+        }
+    }
+
+    _proto.addMarkIcon = function(name){
+        var mark = new Laya.Image(name);
+        mark.centerX = this.icon.centerX;
+        mark.y = this.icon.height - mark.height;
+        this.icon.addChild(mark);
+    }
+
 
     _proto.fuzzySkin = function (){
         var skin = this.icon.skin;
-        // console.log(skin);
         var name = skin.substring(8,skin.length);
         this.icon.skin = "fuzzy/" + name;
+        this.markIconDisplay(0);
+        
     }
-    _proto.brightSkin = function(){
+    _proto.clearlySkin = function(){
         var skin = this.icon.skin;
-        console.log(this.icon.skin);
-        // var name = skin.substring(6,skin.length);
-        // this.icon.skin = "symbols/" + name;
+        var name = skin.substring(6,skin.length);
+        this.icon.skin = "symbols/" + name;
+        this.markIconDisplay(1);
+    }
+
+    _proto.markIconDisplay = function(a){
+        if(this.icon.numChildren > 0){
+            switch (this.info.index) {
+            case 0:
+                this.icon.getChildAt(0).alpha = a;
+                break;
+            case 1:
+                this.icon.getChildAt(0).alpha = a;
+                break;
+            default:
+                break;
+            }
+        }
     }
 
     _proto.playAnimation = function(){

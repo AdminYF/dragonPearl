@@ -476,6 +476,8 @@
                 originY.push(i * iconH);
                 image.offset = 0;
                 box.addChild(image);
+                image.info = obj;
+                image.showMarkIcon();
             }
             panelBox.addChild(box);
             mark = box.height;
@@ -598,6 +600,7 @@
                 img.clearChild();
                 img.resizeIcon(arry[j].image);
                 img.info = arry[j];//在重新排序后  需要对该属性赋值 否则开奖时获取不到相应的图标
+                img.showMarkIcon();
                 img.fuzzySkin();
             }
         }
@@ -657,9 +660,7 @@
                             }
                             for(var n = 0; n < box.numChildren; n++){
                                 var ele = box.getChildAt(n);
-                                var skin = ele.icon.skin;
-                                var name = skin.substring(6,skin.length);
-                                ele.icon.skin = "symbols/" + name;
+                                ele.clearlySkin();
                                 Laya.Tween.to(ele,{y : originY[n] },1000,Laya.Ease.elasticOut,Laya.Handler.create(this,this.stop));
                             }
                         }
