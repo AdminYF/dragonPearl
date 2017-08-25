@@ -1,0 +1,13 @@
+{
+  "name": "Slot",
+  "homepage": "https://github.com/zwp/Slot",
+  "_release": "47bb45c557",
+  "_resolution": {
+    "type": "branch",
+    "branch": "master",
+    "commit": "47bb45c557d49b1c87f8c1bcb974aa3391ae1717"
+  },
+  "_source": "https://github.com/zwp/Slot.git",
+  "_target": "*",
+  "_originalSource": "Slot"
+}

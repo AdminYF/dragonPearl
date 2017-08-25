@@ -14,17 +14,14 @@
 
     var bar;
     var originX;
-
-    
-    var _this;
-    function SettingOption(){
-        SettingOption.__super.call(this);
+    function Setting(){
+        Setting.__super.call(this);
         this.init();
     }
-    Laya.class(SettingOption,"SettingOption",SettingUI);
-    var _proto = SettingOption.prototype;
+    Laya.class(Setting,'Setting',SettingUI);
+    var _proto = Setting.prototype;
     _proto.init = function(){
-        _this = this;
+         _this = this;
         this.initViews();
 
         originX = this.tab.x - 50;
@@ -37,7 +34,6 @@
         this.tab.selectedIndex = titles.length - 1;
         this.onSelect(this.tab.selectedIndex);
         this.tab.selectHandler = new Laya.Handler(this,this.onSelect);
-        
     }
 
     _proto.back = function(handler){
@@ -85,13 +81,13 @@
     _proto.initViews = function(){
         box = new Laya.Box();
         box.pos(0,103);
-        box.size(800 * titles.length, 500);
+        box.size(800, 500);
         this.addChild(box);
 
         this.audioSet = new AudioSetView();
         this.audioSet.pos(0,0);
         box.addChild(this.audioSet);
-    
+        
         this.scrollSet = new ScrollSetView();
         this.scrollSet.pos(800,0);
         box.addChild(this.scrollSet);
@@ -109,6 +105,7 @@
         info.pos(4 * 800,0);
         info.size(800,1500);
         box.addChild(info);
+        
     }
 
     _proto.setOption = function(obj){
@@ -119,3 +116,5 @@
 
     }
 })();
+
+

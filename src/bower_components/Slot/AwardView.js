@@ -75,6 +75,8 @@
     }
 
     _proto.itemClick  = function(e,callBack){
+        var disEnable = "bouns/bouns_dis.png";
+        (window.gameType == 8) ? disEnable = 'bouns/bouns_dis.png' : disEnable = 'commen/dpbonus_03.png';
         window.playSound("dpselected");
         this.controlItems(false);
         e.pressed = true;
@@ -83,7 +85,7 @@
         if(clickCount >= 0){
             Laya.Tween.to(e,{y : e.y - 20},500,Laya.Ease.strongIn,Laya.Handler.create(this,function(){
                 Laya.Tween.to(e,{y : e.y + 20},1000,Laya.Ease.elasticOut,Laya.Handler.create(this,function(){
-                    e.skin = "commen/dpbonus_03.png";
+                    e.skin = disEnable;
                     e.addChild(awardType[clickCount].image);
                     this.controlItems(true);
                 }));           
@@ -96,7 +98,7 @@
                 Laya.timer.once(2000,this,function(){
                     for(var i = 0; i < this.itemBox.numChildren; i++){
                         var item = this.itemBox.getChildAt(i);
-                        item.skin = "commen/dpbonus_03.png";
+                        item.skin = disEnable;
                     }
                 });
 
