@@ -48,7 +48,7 @@ this.socketInfo = {
     ip : "192.168.1.106",
     port : 22287
 };
-
+var gameType = 7;
 this.soundEnable = false;
 this.index = 0;
 this.loaded = false;

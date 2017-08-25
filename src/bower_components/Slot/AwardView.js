@@ -58,7 +58,7 @@
     }
 
     _proto.autoClick = function(index){
-        Laya.timer.once(20000 * index,this,function(){
+        Laya.timer.once(60000 * index,this,function(){
             var current;
             for(var i = 0; i < this.itemBox.numChildren; i++){
                 var item = this.itemBox.getChildAt(i);
