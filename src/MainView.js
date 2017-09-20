@@ -969,8 +969,9 @@
                 _this.buttonDisplay(true);
             });
         }
-        
-        socket.input.clear();
+        if (!isApp) {
+            socket.input.clear();
+        }
     }
 
     _proto.forwardStartIndex = function(){
