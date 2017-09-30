@@ -304,7 +304,7 @@
             this.musicToast();
         }
         var money = window.formatCurrency(totalAmount);
-        this.balance.text = "余额 " + totalAmount * 10;
+        this.balance.text = "余额 " + (totalAmount * 10).toFixed(1);
         this.amount.text = "¥" + money;
 
         panelBox = new Laya.Panel();
@@ -913,7 +913,7 @@
             }
             totalAmount -= option.amount;
             var money = window.formatCurrency(totalAmount);
-            this.balance.text = "余额 " + totalAmount * 10;
+            this.balance.text = "余额 " + (totalAmount * 10).toFixed(1);
             this.amount.text = "¥" + money;
             this.toastLabel.text = ""
             this.win.text = "";
@@ -941,7 +941,7 @@
                     // console.log(data);
                     totalAmount = data.amount;
                     var money = window.formatCurrency(totalAmount);
-                    this.balance.text = "余额 " + totalAmount * 10;
+                    this.balance.text = "余额 " + (totalAmount * 10).toFixed(1);
                     this.amount.text = "¥" + money;
                 break;
                 case "videoSlot":
@@ -1083,7 +1083,7 @@
         base += s;
         lastAmount = base;
         var money = window.formatCurrency(base);
-        this.balance.text = "余额 " + base * 10;
+        this.balance.text = "余额 " + (base * 10).toFixed(1);
         this.amount.text = "¥" + money;
         if(s > 0){
             this.showWinText(s);
