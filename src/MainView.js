@@ -112,11 +112,11 @@
         "gameType":7,
 
         // map:[  //用于测试 传入map返回的开奖以map为结果 没传map结果由服务端生成
-        //     [0,2,9],
-        //     [0,8,1],
-        //     [0,3,4],
-        //     [5,6,3],
-        //     [7,9,2]
+        //     [8, 6, 5],
+        //     [8, 2, 0],
+        //     [0, 5, 1],
+        //     [4, 6, 0],
+        //     [6, 0, 7]
 	    // ]
     };
 
@@ -302,6 +302,7 @@
             this.connect();
         }else{
             this.musicToast();
+            window.webkit.messageHandlers.slot.postMessage(JSON.stringify({cmd:"EnterGame", gameId:7}));
         }
         var money = window.formatCurrency(totalAmount);
         this.balance.text = "余额 " + (totalAmount * 10).toFixed(1);
@@ -573,7 +574,7 @@
         fireControl.isFire = false;
         fireControl.index = 0;
         var index = this.forwardStartIndex();
-        console.log(index);
+        // console.log(index);
         if(index > 1){
             fireControl.isFire = true;
             fireControl.index = index;
@@ -677,14 +678,16 @@
                 mask.graphics.drawRect(0,0,maskContainer.width,maskContainer.height,"#000000");
                 for (var i = 0; i < results.length; i++){
                     var obj = results[i];
-                    var lineObj = null;
-                    for(var n = 0; n < lines.length; n++){
-                        var a = lines[n];
-                        if(a.id == obj.lineId){
-                            lineObj = a;
+                    if (obj.betType > 0) {
+                        var lineObj = null;
+                        for(var n = 0; n < lines.length; n++){
+                            var a = lines[n];
+                            if(a.id == obj.lineId){
+                                lineObj = a;
+                            }
                         }
+                        this.heightLightItem(lineObj,obj,i,results.length);
                     }
-                    this.heightLightItem(lineObj,obj,i,results.length);
                 }
                 this.displayWinAmount(totalAmount,0);
                 this.showWinText(winAmount);
@@ -932,11 +935,14 @@
             switch (data.cmd){
                 case "Login":
                     console.log("登录成功");
-                    socket.send(JSON.stringify({"cmd" : "UserInfo"}));
+                    socket.send(JSON.stringify({cmd:"EnterGame", gameId:7}));
                 break;
-                case "TrialGame":
-                    socket.send(JSON.stringify({"cmd" : "UserInfo"}));
+                case "TrialGame":                   
+                    socket.send(JSON.stringify({cmd:"EnterGame", gameId:7}));
                 break;
+                case 'EnterGame':
+                    socket.send(JSON.stringify({"cmd" : "UserInfo"}));
+                    break;
                 case "UserInfo":
                     // console.log(data);
                     totalAmount = data.amount;
@@ -995,7 +1001,6 @@
                 }
             }
         }
-        console.log(symbolCount);
         if(symbolCount.length == 2){
             return symbolCount[1] + 1;
         }else{
@@ -1006,7 +1011,6 @@
     _proto.prepareResultData = function(){
         if(data.result.length != 0){
             results = data.result;
-            console.log(results);
         }else{
             results = [];
         }

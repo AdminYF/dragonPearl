@@ -45,8 +45,8 @@ var images = [
     ];
 // webSocket 信息
 this.socketInfo = {
-    ip : "192.168.1.106",
-    port : 22287
+    ip : "192.168.1.33",
+    port : 32287
 };
 var gameType = 7;
 this.soundEnable = false;
@@ -214,6 +214,7 @@ function recieveMassage(message){
 }
 // 退出游戏界面
 function closeWindow(){
+    window.isApp ? window.webkit.messageHandlers.slot.postMessage(JSON.stringify({cmd:"ExitGame", gameId:7})):socket.send(JSON.stringify({cmd:"ExitGame", gameId:7}));
     window.close();
     if(isApp){
         window.webkit.messageHandlers.close.postMessage('close');
