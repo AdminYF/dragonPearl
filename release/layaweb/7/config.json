@@ -1,0 +1,5 @@
+{
+	"luck_info_Socket" : true,
+	"luck_localhost" : "ws://192.168.1.33:32287",
+	"backUrl":"http://192.168.1.189"
+}

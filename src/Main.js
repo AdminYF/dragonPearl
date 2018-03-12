@@ -43,11 +43,7 @@ var images = [
     "res/atlas/particle.atlas"
 
     ];
-// webSocket 信息
-this.socketInfo = {
-    ip : "192.168.1.33",
-    port : 32287
-};
+
 var gameType = 7;
 this.soundEnable = false;
 this.index = 0;
@@ -245,63 +241,32 @@ function cacheFrameAnimation (){
     Laya.Animation.createFrames("res/atlas/money.atlas","money");
 }
 
-// function recieveMassage (message){
-//     alert(message);
-// }
-// function setErrorCode (){
-//     this.errorCode.set("-1","标识码错误");
-//     this.errorCode.set("-2","会员不存在");
-//     this.errorCode.set("-3","桌暂时无法使用");
-//     this.errorCode.set("-4","");
-//     this.errorCode.set("-5","账户或密码不正確");
-//     this.errorCode.set("-6","服务器错误");
-//     this.errorCode.set("-7","标识码错误");
-//     this.errorCode.set("-8","标识码错误");
-//     this.errorCode.set("-9","标识码错误");
-// }
+// webSocket 信息
+var socketUrl = '';
+var hr = new Laya.HttpRequest();
+hr.once(Laya.Event.PROGRESS, this, function(e) {});
+hr.once(Laya.Event.COMPLETE, this, function(e) {
+    switch (typeof e) {
+        case "string":
+            var data = JSON.parse(e);
+            socketUrl = data.luck_localhost;
+            console.log(e);
+            break;
+        case "object":
+            socketUrl = e.luck_localhost;
+            console.log(e);
+            break;
+        default:
+            alert('config.json 配置错误');
+            break;
+    }
+});
+hr.once(Laya.Event.ERROR, this, function(e) {});
+hr.send('/config.json', null, 'get', 'text');
 
-/*
-NSString * const errorCode_1 = @"标识码错误";
-NSString * const errorCode_2 = @"会员不存在";
-NSString * const errorCode_3 = @"桌暂时无法使用";
-NSString * const errorCode_4 = @"";
-NSString * const errorCode_5 = @"账户或密码不正確";
-NSString * const errorCode_6 = @"服务器错误";
-NSString * const errorCode_7 = @"注册会员失败";
-NSString * const errorCode_8 = @"注册用户名已被使用";
-NSString * const errorCode_9 = @"";
-NSString * const errorCode_10 = @"金额不能为零";
-NSString * const errorCode_11 = @"金额操作失败";
-NSString * const errorCode_12 = @"金额不足";
-NSString * const errorCode_13 = @"参数不正确";
-NSString * const errorCode_14 = @"日期区间错误";
-NSString * const errorCode_15 = @"用户未登录";
-NSString * const errorCode_16 = @"代理账户验证不通过";
-NSString * const errorCode_17 = @"金额记录不存在";
-NSString * const errorCode_18 = @"验证码不正确";
-NSString * const errorCode_19 = @"已封盘";
-NSString * const errorCode_20 = @"后台未开启此投注项";
-NSString * const errorCode_21 = @"投注项异常";
-NSString * const errorCode_22 = @"桌错误";
-NSString * const errorCode_23 = @"局错误";
-NSString * const errorCode_24 = @"未开盘";
-NSString * const errorCode_25 = @"停止投注";
-NSString * const errorCode_26 = @"禁止投注";
-NSString * const errorCode_27 = @"限红值异常";
-NSString * const errorCode_28 = @"低于最小投注金额";
-NSString * const errorCode_29 = @"高于最大投注金额";
-NSString * const errorCode_30 = @"系统维护";
-NSString * const errorCode_31 = @"网络连接失败";
-NSString * const errorCode_32 = @"业务逻辑限制";
-NSString * const errorCode_33 = @"数据库操作失败";
-NSString * const errorCode_34 = @"意外异常";
-NSString * const errorCode_35 = @"无效的SessionKey";
-NSString * const errorCode_36 = @"没有进桌权限";
-NSString * const errorCode_37 = @"桌位置已有人";
-NSString * const errorCode_38 = @"已下注不能退桌";
-NSString * const errorCode_39 = @"旧密码验证错误";
-NSString * const errorCode_40 = @"不在此桌不能下注";
-NSString * const errorCode_41 = @"游戏已结算";
-NSString * const errorCode_42 = @"账号被冻结";
-NSString * const errorCode_43 = @"客户端版本不匹配";
-*/
+
+function getQueryString(name) {//JS获取URL参数
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}

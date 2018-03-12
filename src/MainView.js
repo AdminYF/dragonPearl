@@ -865,14 +865,21 @@
 // ============================================= socket =========================================================//
     _proto.connect = function(){
 		socket = new Socket();
-		socket.connect(window.socketInfo.ip, window.socketInfo.port);
+		socket.connectByUrl(socketUrl);
 		output = socket.output;
 		socket.on(Event.OPEN, this, function(){
             console.log("Connected");
-            socket.send(JSON.stringify({
-                "cmd":"TrialGame",
-                "versions":"1.0"
-            }));
+            
+            var key = getQueryString('SessionKey');
+            if (key && key.length != 0) {
+                var obj = {"cmd":"Login","sessionKey":key,"versions":"1.0"};
+                socket.send(JSON.stringify(obj));
+            }else{
+                socket.send(JSON.stringify({
+                    "cmd":"TrialGame",
+                    "versions":"1.0"
+                }));
+            }
 
             Laya.timer.loop(15000,this,function(){
                 socket.send(JSON.stringify({"cmd" : "Heartbeat"}));
@@ -882,13 +889,13 @@
             
         });
 		socket.on(Event.CLOSE, this, function(){
-            socket.offAll();
-            var p = new PromptView("链接已断开，是否重连？");
-            this.addChild(p);
-            p.buttonClick(function(){
-                _this.removeSelf();
-                window.closeWindow();
-            });
+            // socket.offAll();
+            // var p = new PromptView("链接已断开，是否重连？");
+            // this.addChild(p);
+            // p.buttonClick(function(){
+            //     _this.removeSelf();
+            //     window.closeWindow();
+            // });
         });
 		socket.on(Event.MESSAGE, this, this.onMessageReveived);
 		socket.on(Event.ERROR, this, function(e){
@@ -942,6 +949,19 @@
                 break;
                 case 'EnterGame':
                     socket.send(JSON.stringify({"cmd" : "UserInfo"}));
+                    break;
+                case 'ExitGame':
+                    var p = new PromptView("链接已断开，请刷新重试");
+                    this.addChild(p);
+                    p.buttonClick(function(){
+                        p.removeSelf();
+                        _this.removeSelf();
+                        window.close();
+                        if(isApp){
+                            window.webkit.messageHandlers.close.postMessage('close');
+                        }
+                    });
+                    Laya.timer.clearAll();
                     break;
                 case "UserInfo":
                     // console.log(data);
